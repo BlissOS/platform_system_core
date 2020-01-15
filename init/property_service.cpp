@@ -969,39 +969,8 @@ static void property_initialize_build_id() {
     }
 }
 
-static std::string ConstructBuildFingerprint(bool legacy) {
-    const std::string UNKNOWN = "unknown";
-    std::string build_fingerprint = GetProperty("ro.product.brand", UNKNOWN);
-    build_fingerprint += '/';
-    build_fingerprint += GetProperty("ro.product.name", UNKNOWN);
-
-    // should be set in /product/etc/build.prop
-    // when we have a dev option device, and we've switched the kernel to 16kb mode
-    // we use the same system image, but we've switched out the kernel, so make it
-    // visible at a high level
-    bool has16KbDevOption =
-            android::base::GetBoolProperty("ro.product.build.16k_page.enabled", false);
-    if (has16KbDevOption && getpagesize() == 16384) {
-        build_fingerprint += "_16kb";
-    }
-
-    build_fingerprint += '/';
-    build_fingerprint += GetProperty("ro.product.device", UNKNOWN);
-    build_fingerprint += ':';
-    build_fingerprint += GetProperty("ro.build.version.release_or_codename", UNKNOWN);
-    build_fingerprint += '/';
-
-    std::string build_id =
-            legacy ? GetProperty(LEGACY_ID_PROP, UNKNOWN) : GetProperty(ID_PROP, UNKNOWN);
-    build_fingerprint += build_id;
-    build_fingerprint += '/';
-    build_fingerprint += GetProperty("ro.build.version.incremental", UNKNOWN);
-    build_fingerprint += ':';
-    build_fingerprint += GetProperty("ro.build.type", UNKNOWN);
-    build_fingerprint += '/';
-    build_fingerprint += GetProperty("ro.build.tags", UNKNOWN);
-
-    return build_fingerprint;
+static std::string ConstructBuildFingerprint(bool /* legacy */) {
+    return GetProperty("ro.vendor.build.fingerprint", "");
 }
 
 // Derive the legacy build fingerprint if we overwrite the build id at runtime.
