@@ -1366,6 +1366,9 @@ on property:ro.debuggable=1
 on init && property:ro.debuggable=1 && property:ro.console.enable=1
     start console
 
+on init && property:ro.boot.enable_console=1
+    start console
+
 # Multi-Gen LRU Experiment
 on property:persist.device_config.mglru_native.lru_gen_config=none
   write /sys/kernel/mm/lru_gen/enabled 0
