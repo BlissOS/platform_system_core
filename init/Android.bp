@@ -338,6 +338,7 @@ cc_binary {
     name: "init_first_stage",
     stem: "init",
     defaults: ["init_first_stage_defaults"],
+    installable: false,
 
     srcs: [
         "block_dev_initializer.cpp",
