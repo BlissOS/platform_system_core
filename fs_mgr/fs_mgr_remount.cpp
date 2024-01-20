@@ -127,12 +127,11 @@ class MyLogger {
 }
 
 static android::sp<android::os::IVold> GetVold() {
+    auto sm = android::defaultServiceManager();
     while (true) {
-        if (auto sm = android::defaultServiceManager()) {
-            if (auto binder = sm->getService(android::String16("vold"))) {
-                if (auto vold = android::interface_cast<android::os::IVold>(binder)) {
-                    return vold;
-                }
+        if (auto binder = sm->checkService(android::String16("vold"))) {
+            if (auto vold = android::interface_cast<android::os::IVold>(binder)) {
+                return vold;
             }
         }
         std::this_thread::sleep_for(2s);
@@ -625,7 +624,7 @@ int main(int argc, char* argv[]) {
     // If somehow this executable is delivered on a "user" build, it can
     // not function, so providing a clear message to the caller rather than
     // letting if fall through and provide a lot of confusing failure messages.
-    if (!ALLOW_ADBD_DISABLE_VERITY || !android::base::GetBoolProperty("ro.debuggable", false)) {
+    if (!ALLOW_ADBD_DISABLE_VERITY) {
         LOG(ERROR) << "Device must be userdebug build";
         return EXIT_FAILURE;
     }
