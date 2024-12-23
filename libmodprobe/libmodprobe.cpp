@@ -356,6 +356,8 @@ Modprobe::Modprobe(const std::vector<std::string>& base_paths, const std::string
         auto load_callback = std::bind(&Modprobe::ParseLoadCallback, this, _1);
         ParseCfg(release_base_path + "/" + load_file, load_callback);
         ParseCfg(base_path + "/" + load_file, load_callback);
+        ParseCfg("/system/etc" + load_file, load_callback);
+        ParseCfg("/data/vendor" + load_file, load_callback);
 
         auto options_callback = std::bind(&Modprobe::ParseOptionsCallback, this, _1);
         ParseCfg(release_base_path + "/modules.options", options_callback);
