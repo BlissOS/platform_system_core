@@ -885,7 +885,6 @@ static const char *snet_prop_key[] = {
     "ro.boot.warranty_bit",
     "ro.warranty_bit",
     "ro.debuggable",
-    "ro.secure",
     "ro.build.type",
     "ro.system.build.type",
     "ro.system_ext.build.type",
@@ -914,7 +913,6 @@ static const char *snet_prop_value[] = {
     "0", // ro.boot.warranty_bit
     "0", // ro.warranty_bit
     "0", // ro.debuggable
-    "1", // ro.secure
     "user", // ro.build.type
     "user", // ro.system.build.type
     "user", // ro.system_ext.build.type
@@ -959,6 +957,9 @@ static void workaround_snet_properties() {
     for (int i = 0; snet_prop_key[i]; ++i) {
         PropertySetNoSocket(snet_prop_key[i], snet_prop_value[i], &error);
     }
+
+    if (!android::base::GetBoolProperty("ro.boot.insecure_adb", 0)) {
+        PropertySetNoSocket("ro.secure", "1", &error);}
 
     // Extra pops
     std::string build_flavor_key = "ro.build.flavor";
