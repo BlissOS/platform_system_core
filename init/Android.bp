@@ -419,6 +419,7 @@ init_first_stage_cc_defaults {
         "-DSHUTDOWN_ZERO_TIMEOUT=0",
         "-DLOG_UEVENTS=0",
         "-DSEPOLICY_VERSION=30", // TODO(jiyong): externalize the version number
+        "-DFIRST_STAGE",
     ],
 
     product_variables: {

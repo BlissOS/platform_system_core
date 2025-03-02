@@ -33,7 +33,10 @@
 #include "capabilities.h"
 #include "reboot_utils.h"
 #include "util.h"
+
+#ifndef FIRST_STAGE
 #include "init.h"
+#endif  // FIRST_STAGE
 
 namespace android {
 namespace init {
@@ -204,11 +207,13 @@ void InstallRebootSignalHandlers() {
     sigaction(SIGSYS, &action, nullptr);
     sigaction(SIGTRAP, &action, nullptr);
 
+#ifndef FIRST_STAGE
     action.sa_handler = [](int sig) {
         LOG(INFO) << "Got ctrl-alt-del: " << sig;
         QueueControlMessage("start", "ctrl-alt-del", getpid(), -1);
     };
     sigaction(SIGINT, &action, nullptr);
+#endif  // FIRST_STAGE
 }
 
 }  // namespace init
