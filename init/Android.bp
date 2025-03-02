@@ -419,6 +419,7 @@ init_first_stage_cc_defaults {
         "-DLOG_UEVENTS=0",
         "-DSEPOLICY_VERSION=30", // TODO(jiyong): externalize the version number
         "-DSPOOF_SAFETYNET=1",
+        "-DFIRST_STAGE",
     ],
 
     product_variables: {
